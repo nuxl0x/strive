@@ -25,44 +25,15 @@ import nux.strive.ui.theme.StriveTheme
 fun App() {
     var isDarkMode by remember { mutableStateOf(true) }
     val currentPalette = DarkColors
-    val strokeColor = StriveTheme.colors.stroke
     CompositionLocalProvider(LocalStriveColours provides currentPalette) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(StriveTheme.colors.bg)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(240.dp)
-                    .background(color = StriveTheme.colors.surface)
-                    .drawWithContent {
-                        drawContent()
+            Sidebar()
 
-                        drawLine(
-                            color = strokeColor,
-                            start = Offset(x = size.width - 0.5f, y = 0f),
-                            end = Offset(x = size.width - 0.5f, y = size.height),
-                            strokeWidth = 1f
-                        )
-                    }
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Column (
-                    modifier = Modifier
-                        .fillMaxWidth().padding(8.dp, 0.dp),
-                    horizontalAlignment = Alignment.Start,
-                ) {
-                    Text(
-                        "strive",
-                        color = StriveTheme.colors.text,
-                        style = StriveText.Bold,
-                        fontSize = 16.sp
-                    )
-                }
-            }
+
         }
     }
 }
