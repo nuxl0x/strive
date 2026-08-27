@@ -19,13 +19,12 @@ object StriveText {
             Font(resource = Res.font.geist_bold, weight = FontWeight.Bold)
         )
 
-    // Direct, manual text styles ready for your views
     val Bold: TextStyle
         @Composable get() = TextStyle(fontFamily = family, fontWeight = FontWeight.Bold, fontSize = 20.sp)
 
     val Semibold: TextStyle
-        @Composable get() = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+        @Composable get() = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
 
     val Normal: TextStyle
-        @Composable get() = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 14.sp)
+        @Composable get() = TextStyle(fontFamily = family, fontWeight = FontWeight.Normal, fontSize = 16.sp)
 }
