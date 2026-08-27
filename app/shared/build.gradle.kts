@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+
+    kotlin("plugin.serialization") version "2.4.10"
 }
 
 kotlin {
@@ -46,6 +48,9 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

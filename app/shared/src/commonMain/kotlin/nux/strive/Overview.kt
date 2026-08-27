@@ -1,0 +1,184 @@
+package nux.strive
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import nux.strive.ui.theme.StriveText
+import nux.strive.ui.theme.StriveTheme
+
+@Composable
+fun Overview() {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // First
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column {
+                Text(
+                    text = "Today's Overview",
+                    style = StriveText.Semibold,
+                    fontSize = 24.sp,
+                    color = StriveTheme.colors.text
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Thursday, August 27th",
+                    style = StriveText.Normal,
+                    fontSize = 13.sp,
+                    color = StriveTheme.colors.greyText
+                )
+            }
+
+            Card(
+                modifier = Modifier.size(87.dp, 33.dp),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(StriveTheme.colors.surface),
+                border = BorderStroke(1.dp, StriveTheme.colors.stroke)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "25:00",
+                        style = StriveText.Semibold,
+                        fontSize = 13.sp,
+                        color = StriveTheme.colors.text
+                    )
+                }
+            }
+
+        }
+
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+
+        // Second Row
+        Card(
+            modifier = Modifier
+                .height(112.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(StriveTheme.colors.surface),
+            border = BorderStroke(1.dp, StriveTheme.colors.stroke)
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Daily Flow",
+                            style = StriveText.Semibold,
+                            fontSize = 16.sp,
+                            color = StriveTheme.colors.text
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "Keep maintaining the pace. 3 out of 5 objectives completed today.",
+                            style = StriveText.Normal,
+                            fontSize = 13.sp,
+                            color = StriveTheme.colors.greyText
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text(
+                        text = "60%",
+                        style = StriveText.Semibold,
+                        fontSize = 20.sp,
+                        color = StriveTheme.colors.accent
+                    )
+                }
+
+                LinearProgressIndicator(
+                    progress = { 0.6f },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(3.dp)),
+                    color = StriveTheme.colors.accent,
+                    trackColor = StriveTheme.colors.bg,
+                    drawStopIndicator = {}
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+
+        // Third Row
+        Card(
+            modifier = Modifier
+                .height(334.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(StriveTheme.colors.surface),
+            border = BorderStroke(1.dp, StriveTheme.colors.stroke)
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "Task List",
+                        style = StriveText.Semibold,
+                        fontSize = 15.sp,
+                        color = StriveTheme.colors.text
+                    )
+
+                    Text(
+                        text = "+ Add Custom Task",
+                        style = StriveText.Normal,
+                        fontSize = 12.sp,
+                        color = StriveTheme.colors.accent
+                    )
+                }
+
+                // List
+            }
+        }
+    }
+}
+

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
@@ -15,12 +16,13 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import nux.strive.ui.components.SidebarItem
 import nux.strive.ui.theme.StriveText
 import nux.strive.ui.theme.StriveTheme
 
 @Composable
-fun Sidebar() {
+fun Sidebar(navController: NavController) {
     val strokeColor = StriveTheme.colors.stroke
     Column(
         modifier = Modifier
@@ -43,11 +45,14 @@ fun Sidebar() {
         Text(
             text = "strive/overview",
             color = StriveTheme.colors.text,
-            style = StriveText.Bold
+            style = StriveText.Bold,
+            fontSize = 16.sp,
         )
 
+        Spacer(modifier = Modifier.height(30.dp))
+
         Screen.sidebarItems.forEach { item ->
-            SidebarItem(item)
+            SidebarItem(item, navController)
         }
     }
 }
