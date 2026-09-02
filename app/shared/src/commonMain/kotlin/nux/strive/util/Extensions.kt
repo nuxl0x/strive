@@ -4,6 +4,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
+import kotlin.time.Duration
 
 fun LocalDate.format(shouldComparativeFormat: Boolean = false): String {
     val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
@@ -26,4 +27,16 @@ fun LocalDate.format(shouldComparativeFormat: Boolean = false): String {
 
     return "$day, $month $dayOfMonth$suffix"
 
+}
+
+fun Duration.format(): String {
+    val (hours, minutes) = toComponents { hours, minutes, _, _ ->
+        Pair(hours, minutes)
+    }
+
+    val parts = mutableListOf<String>()
+    if (hours > 0) parts.add("${hours}h")
+    if (minutes > 0) parts.add("${minutes}m")
+
+    return parts.joinToString(" ").ifEmpty { "0m" }
 }

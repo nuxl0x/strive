@@ -19,19 +19,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.LocalDate
-import nux.strive.models.DeadlineModel
-import nux.strive.models.DeadlineStatus
+import nux.strive.models.AssessmentModel
+import nux.strive.models.Status
 import nux.strive.ui.theme.StriveText
 import nux.strive.ui.theme.StriveTheme
 import nux.strive.util.format
 
 @Composable
-fun DeadlineItem(model: DeadlineModel) {
+fun DeadlineItem(model: AssessmentModel) {
     val accentColor = when (model.getDeadlineStatus()) {
-        DeadlineStatus.OVERDUE -> Color(0xFFAC3636)
-        DeadlineStatus.DUE -> Color(0xFFBF5B34)
-        DeadlineStatus.SOON -> StriveTheme.colors.accent
-        DeadlineStatus.NOT_DUE -> StriveTheme.colors.stroke
+        Status.OVERDUE -> Color(0xFFAC3636)
+        Status.DUE -> Color(0xFFBF5B34)
+        Status.SOON -> StriveTheme.colors.accent
+        Status.NOT_DUE -> StriveTheme.colors.stroke
     }
 
     Card(
@@ -44,7 +44,7 @@ fun DeadlineItem(model: DeadlineModel) {
             modifier = Modifier.fillMaxWidth().padding(16.dp)
         ) {
             Text(
-                text = model.taskName,
+                text = model.name,
                 color = StriveTheme.colors.text,
                 style = StriveText.Normal,
                 fontSize = 13.sp,
@@ -67,7 +67,7 @@ fun DeadlineItem(model: DeadlineModel) {
                 )
 
                 Text(
-                    text = if (model.getDeadlineStatus() == DeadlineStatus.NOT_DUE) {
+                    text = if (model.getDeadlineStatus() == Status.NOT_DUE) {
                         ""
                     } else {
                         model.getDeadlineStatus().name
@@ -82,10 +82,11 @@ fun DeadlineItem(model: DeadlineModel) {
     }
 }
 
-val exampleDeadlineModels = listOf(
-    DeadlineModel("Math Midterm Exam", LocalDate(2026, 9, 1)),
-    DeadlineModel("Philosophy Paper Draft", LocalDate(2026, 9, 2)),
-    DeadlineModel("Physics Lab Report 3", LocalDate(2026, 9, 3)),
-    DeadlineModel("English Language Exam", LocalDate(2026, 9, 28))
+val exampleAssessmentModels = listOf(
+    AssessmentModel("Math Midterm Exam", LocalDate(2026, 9, 1)),
+    AssessmentModel("Philosophy Paper Draft", LocalDate(2026, 9, 2)),
+    AssessmentModel("Physics Lab Report 3", LocalDate(2026, 9, 3)),
+    AssessmentModel("English Language Exam", LocalDate(2026, 9, 28)),
+    AssessmentModel("Applied Computing SAC", LocalDate(2026, 9, 3))
 )
 

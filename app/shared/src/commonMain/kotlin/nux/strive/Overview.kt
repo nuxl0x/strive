@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -31,7 +32,9 @@ import androidx.compose.ui.unit.sp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import nux.strive.ui.components.overview.DeadlineItem
-import nux.strive.ui.components.overview.exampleDeadlineModels
+import nux.strive.ui.components.overview.TaskItem
+import nux.strive.ui.components.overview.exampleAssessmentModels
+import nux.strive.ui.components.overview.exampleTaskModels
 import nux.strive.ui.theme.StriveText
 import nux.strive.ui.theme.StriveTheme
 import nux.strive.util.format
@@ -197,7 +200,12 @@ fun Overview() {
                         )
                     }
 
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     // List
+                    exampleTaskModels.forEach { model ->
+                        TaskItem(model)
+                    }
                 }
             }
 
@@ -210,7 +218,7 @@ fun Overview() {
             ) {
                 Card(
                     modifier = Modifier
-                        .weight(0.7f)
+                        .weight(0.7f, fill = false)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(StriveTheme.colors.surface),
@@ -218,7 +226,9 @@ fun Overview() {
                 ) {
 
                     Column(
-                        modifier = Modifier.padding(24.dp)
+                        modifier = Modifier
+                            .padding(24.dp)
+                            .wrapContentHeight()
                     ) {
                         Text(
                             text = "Upcoming Deadlines",
@@ -230,10 +240,10 @@ fun Overview() {
                         Spacer(modifier = Modifier.height(16.dp))
 
                         LazyColumn(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(1f, fill = false),
                             state = listState
                         ) {
-                            items(exampleDeadlineModels) { model ->
+                            items(exampleAssessmentModels) { model ->
                                 DeadlineItem(model)
 
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -245,7 +255,7 @@ fun Overview() {
 
                 Card(
                     modifier = Modifier
-                        .weight(0.3f)
+                        .requiredHeightIn(min = 120.dp, max = 120.dp)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(StriveTheme.colors.surface),
@@ -253,6 +263,7 @@ fun Overview() {
                 ) {
                     Column(
                         modifier = Modifier.padding(24.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             text = "Focus Time Spent",
@@ -267,7 +278,7 @@ fun Overview() {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(52.dp),
                         ) {
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "TODAY",
                                     style = StriveText.Normal,
@@ -286,7 +297,7 @@ fun Overview() {
                                 )
                             }
 
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "THIS WEEK",
                                     style = StriveText.Normal,

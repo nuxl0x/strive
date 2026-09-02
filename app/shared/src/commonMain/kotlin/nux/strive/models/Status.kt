@@ -1,6 +1,6 @@
 package nux.strive.models
 
-enum class DeadlineStatus(
+enum class Status(
     text: String
 ) {
     OVERDUE("OVERDUE"),
