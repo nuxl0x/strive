@@ -5,12 +5,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -20,14 +25,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import nux.strive.ui.components.overview.DeadlineItem
+import nux.strive.ui.components.overview.exampleDeadlineModels
 import nux.strive.ui.theme.StriveText
 import nux.strive.ui.theme.StriveTheme
+import nux.strive.util.format
+import kotlin.time.Clock
 
 @Composable
 fun Overview() {
+    val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val listState = rememberLazyListState()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -48,7 +62,7 @@ fun Overview() {
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Thursday, August 27th",
+                    text = currentDate.format(),
                     style = StriveText.Normal,
                     fontSize = 13.sp,
                     color = StriveTheme.colors.greyText
@@ -191,19 +205,20 @@ fun Overview() {
 
             // Side Stuff
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).fillMaxHeight(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Card(
                     modifier = Modifier
-                        .height(192.dp)
+                        .weight(0.7f)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(StriveTheme.colors.surface),
                     border = BorderStroke(1.dp, StriveTheme.colors.stroke)
                 ) {
+
                     Column(
-                        modifier = Modifier.padding(24.dp),
+                        modifier = Modifier.padding(24.dp)
                     ) {
                         Text(
                             text = "Upcoming Deadlines",
@@ -211,12 +226,26 @@ fun Overview() {
                             fontSize = 14.sp,
                             color = StriveTheme.colors.text
                         )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        LazyColumn(
+                            modifier = Modifier.weight(1f),
+                            state = listState
+                        ) {
+                            items(exampleDeadlineModels) { model ->
+                                DeadlineItem(model)
+
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        }
                     }
+
                 }
 
                 Card(
                     modifier = Modifier
-                        .height(126.dp)
+                        .weight(0.3f)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(StriveTheme.colors.surface),
@@ -243,14 +272,17 @@ fun Overview() {
                                     text = "TODAY",
                                     style = StriveText.Normal,
                                     fontSize = 11.sp,
-                                    color = StriveTheme.colors.greyText
+                                    color = StriveTheme.colors.greyText,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
 
                                 Text(
                                     text = "3.5h",
                                     style = StriveText.Semibold,
                                     fontSize = 20.sp,
-                                    color = StriveTheme.colors.text
+                                    color = StriveTheme.colors.text,
+                                    maxLines = 1
                                 )
                             }
 
@@ -259,20 +291,22 @@ fun Overview() {
                                     text = "THIS WEEK",
                                     style = StriveText.Normal,
                                     fontSize = 11.sp,
-                                    color = StriveTheme.colors.greyText
+                                    color = StriveTheme.colors.greyText,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
 
                                 Text(
                                     text = "24.2h",
                                     style = StriveText.Semibold,
                                     fontSize = 20.sp,
-                                    color = StriveTheme.colors.text
+                                    color = StriveTheme.colors.text,
+                                    maxLines = 1
                                 )
                             }
                         }
                     }
                 }
-
 
             }
 

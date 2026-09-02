@@ -13,7 +13,7 @@ data class DeadlineModel(
     fun getDeadlineStatus(): DeadlineStatus {
         val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
-        val daysUntilDue = dueDate.daysUntil(currentDate)
+        val daysUntilDue = currentDate.daysUntil(dueDate)
 
         return when {
             daysUntilDue < 0 -> DeadlineStatus.OVERDUE

@@ -1,10 +1,13 @@
 package nux.strive.ui.components.overview
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -12,16 +15,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import nux.strive.models.DeadlineModel
 import nux.strive.models.DeadlineStatus
 import nux.strive.ui.theme.StriveText
 import nux.strive.ui.theme.StriveTheme
-import kotlin.time.Clock
+import nux.strive.util.format
 
 @Composable
 fun DeadlineItem(model: DeadlineModel) {
@@ -32,23 +34,15 @@ fun DeadlineItem(model: DeadlineModel) {
         DeadlineStatus.NOT_DUE -> StriveTheme.colors.stroke
     }
 
-    val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val isToday = model.dueDate == currentDate
-    val day = model.dueDate.dayOfWeek.name
-    val month = model.dueDate.month.name
-    val dayOfMonth = model.dueDate.day
-
-    val dateText = if (isToday) { "Today" } else { "" }
-
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(61.dp),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(StriveTheme.colors.greyText),
+        colors = CardDefaults.cardColors(StriveTheme.colors.bg),
         border = BorderStroke(1.dp, accentColor)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
+        ) {
             Text(
                 text = model.taskName,
                 color = StriveTheme.colors.text,
@@ -56,12 +50,42 @@ fun DeadlineItem(model: DeadlineModel) {
                 fontSize = 13.sp,
             )
 
-            Row {
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
-                    text = dateText
+                    text = model.dueDate.format(shouldComparativeFormat = true),
+                    color = StriveTheme.colors.greyText,
+                    style = StriveText.Normal,
+                    fontSize = 12.sp,
+                    modifier = Modifier.weight(1f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Text(
+                    text = if (model.getDeadlineStatus() == DeadlineStatus.NOT_DUE) {
+                        ""
+                    } else {
+                        model.getDeadlineStatus().name
+                    },
+                    color = accentColor,
+                    style = StriveText.Semibold,
+                    fontSize = 11.sp,
+                    maxLines = 1
                 )
             }
         }
     }
 }
+
+val exampleDeadlineModels = listOf(
+    DeadlineModel("Math Midterm Exam", LocalDate(2026, 9, 1)),
+    DeadlineModel("Philosophy Paper Draft", LocalDate(2026, 9, 2)),
+    DeadlineModel("Physics Lab Report 3", LocalDate(2026, 9, 3)),
+    DeadlineModel("English Language Exam", LocalDate(2026, 9, 28))
+)
 
