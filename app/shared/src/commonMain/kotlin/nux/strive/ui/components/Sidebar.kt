@@ -1,10 +1,9 @@
-package nux.strive
+package nux.strive.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -17,7 +16,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import nux.strive.ui.components.SidebarItem
+import nux.strive.Screen
 import nux.strive.ui.theme.StriveText
 import nux.strive.ui.theme.StriveTheme
 

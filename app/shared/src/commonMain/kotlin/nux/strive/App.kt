@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import nux.strive.ui.components.overview.Sidebar
 import nux.strive.ui.theme.DarkColors
 import nux.strive.ui.theme.LocalStriveColours
 import nux.strive.ui.theme.StriveTheme

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import org.jetbrains.compose.resources.vectorResource
 import strive.app.shared.generated.resources.Res
 import strive.app.shared.generated.resources.ic_account
