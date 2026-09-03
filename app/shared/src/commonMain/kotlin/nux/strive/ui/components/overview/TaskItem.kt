@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nux.strive.models.TaskModel
@@ -81,6 +82,7 @@ fun TaskItem(model: TaskModel) {
                         imageVector = vectorResource(Res.drawable.ic_checkmark),
                         contentDescription = model.name,
                         modifier = Modifier.size(10.dp),
+                        tint = StriveTheme.colors.bg
                     )
                 }
             }
@@ -93,6 +95,8 @@ fun TaskItem(model: TaskModel) {
                 style = StriveText.Normal,
                 fontSize = 14.sp,
                 textDecoration = if (isCrossed) TextDecoration.LineThrough else TextDecoration.None,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
 
@@ -114,7 +118,9 @@ fun TaskItem(model: TaskModel) {
                         text = model.subject.uppercase(),
                         color = StriveTheme.colors.accent,
                         fontSize = 11.sp,
-                        style = StriveText.Normal
+                        style = StriveText.Normal,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -125,7 +131,9 @@ fun TaskItem(model: TaskModel) {
                 text = model.duration.format(),
                 color = StriveTheme.colors.greyText,
                 style = StriveText.Normal,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

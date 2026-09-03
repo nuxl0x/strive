@@ -26,7 +26,7 @@ fun Sidebar(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .width(240.dp)
+            .width(204.dp)
             .background(color = StriveTheme.colors.surface)
             .drawWithContent {
                 drawContent()

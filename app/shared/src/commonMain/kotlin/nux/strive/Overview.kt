@@ -1,6 +1,10 @@
 package nux.strive
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,14 +27,20 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import nux.strive.ui.components.overview.CustomTaskDialog
 import nux.strive.ui.components.overview.DeadlineItem
 import nux.strive.ui.components.overview.TaskItem
 import nux.strive.ui.components.overview.exampleAssessmentModels
@@ -42,8 +52,11 @@ import kotlin.time.Clock
 
 @Composable
 fun Overview() {
+    val textInteractionSource = remember { MutableInteractionSource() }
     val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val listState = rememberLazyListState()
+    var shouldShowTaskDialog by remember { mutableStateOf(false) }
+    val isCustomTaskTextHighlighted by textInteractionSource.collectIsHoveredAsState()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -196,8 +209,17 @@ fun Overview() {
                             text = "+ Add Custom Task",
                             style = StriveText.Normal,
                             fontSize = 12.sp,
-                            color = StriveTheme.colors.accent
+                            color = StriveTheme.colors.accent,
+                            textDecoration = if (isCustomTaskTextHighlighted) TextDecoration.Underline else TextDecoration.None,
+                            modifier = Modifier
+                                .hoverable(textInteractionSource)
+                                .clickable(interactionSource = textInteractionSource
+                            ) { shouldShowTaskDialog = true }
                         )
+
+                        if (shouldShowTaskDialog) {
+                            CustomTaskDialog { shouldShowTaskDialog = false }
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
