@@ -4,9 +4,11 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Serializable
 import kotlin.time.Clock
 import kotlin.time.Duration
 
+@Serializable
 data class TaskModel(
     val name: String,
     val duration: Duration,

@@ -4,8 +4,10 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Serializable
 import kotlin.time.Clock
 
+@Serializable
 data class AssessmentModel(
     val name: String,
     val dueDate: LocalDate

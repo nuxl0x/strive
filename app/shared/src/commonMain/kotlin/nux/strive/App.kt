@@ -15,9 +15,14 @@ import nux.strive.ui.components.Sidebar
 import nux.strive.ui.theme.DarkColors
 import nux.strive.ui.theme.LocalStriveColours
 import nux.strive.ui.theme.StriveTheme
+import nux.strive.vmodels.OverviewViewModel
+import java.net.http.HttpClient
 
 @Composable
-fun App() {
+fun App(httpClient: HttpClient, serverUrl: String) {
+    val overviewViewModel = remember(httpClient, serverUrl) {
+        OverviewViewModel(httpClient, serverUrl)
+    }
     var isDarkMode by remember { mutableStateOf(true) }
     val currentPalette = DarkColors
 
