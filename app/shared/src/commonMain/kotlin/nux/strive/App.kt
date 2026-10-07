@@ -11,17 +11,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.ktor.client.HttpClient
 import nux.strive.ui.components.Sidebar
 import nux.strive.ui.theme.DarkColors
 import nux.strive.ui.theme.LocalStriveColours
 import nux.strive.ui.theme.StriveTheme
 import nux.strive.vmodels.OverviewViewModel
-import java.net.http.HttpClient
 
 @Composable
-fun App(httpClient: HttpClient, serverUrl: String) {
-    val overviewViewModel = remember(httpClient, serverUrl) {
-        OverviewViewModel(httpClient, serverUrl)
+fun App(httpClient: HttpClient) {
+    val overviewViewModel = remember(httpClient) {
+        OverviewViewModel(httpClient)
     }
     var isDarkMode by remember { mutableStateOf(true) }
     val currentPalette = DarkColors
@@ -44,7 +44,7 @@ fun App(httpClient: HttpClient, serverUrl: String) {
                     .fillMaxHeight()
                     .padding(45.dp, 40.dp),
             ) {
-                composable<Screen.Overview> { Overview() }
+                composable<Screen.Overview> { Overview(overviewViewModel) }
                 composable<Screen.Detailed> { println("DETAILS") }
                 composable<Screen.Settings> { println("SETTINGS") }
                 composable<Screen.Account> { println("ACCOUNT") }

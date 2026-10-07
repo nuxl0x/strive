@@ -24,9 +24,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import nux.strive.ui.components.overview.CustomTaskDialog
@@ -48,15 +51,19 @@ import nux.strive.ui.components.overview.exampleTaskModels
 import nux.strive.ui.theme.StriveText
 import nux.strive.ui.theme.StriveTheme
 import nux.strive.util.format
+import nux.strive.vmodels.OverviewUiState
+import nux.strive.vmodels.OverviewViewModel
 import kotlin.time.Clock
 
 @Composable
-fun Overview() {
+fun Overview(viewModel: OverviewViewModel) {
     val textInteractionSource = remember { MutableInteractionSource() }
     val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val listState = rememberLazyListState()
     var shouldShowTaskDialog by remember { mutableStateOf(false) }
     val isCustomTaskTextHighlighted by textInteractionSource.collectIsHoveredAsState()
+
+    val state by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize()
