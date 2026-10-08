@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -65,189 +66,86 @@ fun Overview(viewModel: OverviewViewModel) {
 
     val state by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        // First
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column {
-                Text(
-                    text = "Today's Overview",
-                    style = StriveText.Semibold,
-                    fontSize = 24.sp,
-                    color = StriveTheme.colors.text
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = currentDate.format(),
-                    style = StriveText.Normal,
-                    fontSize = 13.sp,
-                    color = StriveTheme.colors.greyText
-                )
-            }
-
-            Card(
-                modifier = Modifier.size(87.dp, 33.dp),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(StriveTheme.colors.surface),
-                border = BorderStroke(1.dp, StriveTheme.colors.stroke)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "25:00",
-                        style = StriveText.Semibold,
-                        fontSize = 13.sp,
-                        color = StriveTheme.colors.text
-                    )
-                }
-            }
-
+    when (val currentState = state) {
+        is OverviewUiState.Loading -> {
+            CircularProgressIndicator()
         }
-
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-
-        // Second Row
-        Card(
-            modifier = Modifier
-                .height(112.dp)
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(StriveTheme.colors.surface),
-            border = BorderStroke(1.dp, StriveTheme.colors.stroke)
-        ) {
+        is OverviewUiState.Error -> {
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = currentState.message,
+                    color = StriveTheme.colors.text,
+                    style = StriveText.Normal,
+                    fontSize = 24.sp
+                )
+            }
+        }
+        is OverviewUiState.Success -> {
+            val data = currentState.data
+            var boxesChecked by remember { mutableIntStateOf(0) }
+            val totalBoxes = data.tasks.size
 
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
-                verticalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxSize()
             ) {
+                // First
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {
+                    Column {
                         Text(
-                            text = "Daily Flow",
+                            text = "Today's Overview",
                             style = StriveText.Semibold,
-                            fontSize = 16.sp,
+                            fontSize = 24.sp,
                             color = StriveTheme.colors.text
                         )
 
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
-                            text = "Keep maintaining the pace. 3 out of 5 objectives completed today.",
+                            text = currentDate.format(),
                             style = StriveText.Normal,
                             fontSize = 13.sp,
                             color = StriveTheme.colors.greyText
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Text(
-                        text = "60%",
-                        style = StriveText.Semibold,
-                        fontSize = 20.sp,
-                        color = StriveTheme.colors.accent
-                    )
-                }
-
-                LinearProgressIndicator(
-                    progress = { 0.6f },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp)),
-                    color = StriveTheme.colors.accent,
-                    trackColor = StriveTheme.colors.bg,
-                    drawStopIndicator = {}
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-
-        // Third Row
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-
-            Card(
-                modifier = Modifier
-                    .height(334.dp)
-                    .weight(2f),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(StriveTheme.colors.surface),
-                border = BorderStroke(1.dp, StriveTheme.colors.stroke)
-            ) {
-                Column(
-                    modifier = Modifier.padding(24.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                    Card(
+                        modifier = Modifier.size(87.dp, 33.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(StriveTheme.colors.surface),
+                        border = BorderStroke(1.dp, StriveTheme.colors.stroke)
                     ) {
-                        Text(
-                            text = "Task List",
-                            style = StriveText.Semibold,
-                            fontSize = 15.sp,
-                            color = StriveTheme.colors.text
-                        )
-
-                        Text(
-                            text = "+ Add Custom Task",
-                            style = StriveText.Normal,
-                            fontSize = 12.sp,
-                            color = StriveTheme.colors.accent,
-                            textDecoration = if (isCustomTaskTextHighlighted) TextDecoration.Underline else TextDecoration.None,
-                            modifier = Modifier
-                                .hoverable(textInteractionSource)
-                                .clickable(interactionSource = textInteractionSource
-                            ) { shouldShowTaskDialog = true }
-                        )
-
-                        if (shouldShowTaskDialog) {
-                            CustomTaskDialog { shouldShowTaskDialog = false }
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "25:00",
+                                style = StriveText.Semibold,
+                                fontSize = 13.sp,
+                                color = StriveTheme.colors.text
+                            )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // List
-                    exampleTaskModels.forEach { model ->
-                        TaskItem(model)
-                    }
                 }
-            }
 
-            Spacer(modifier = Modifier.width(24.dp))
 
-            // Side Stuff
-            Column(
-                modifier = Modifier.weight(1f).fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
+                Spacer(modifier = Modifier.height(30.dp))
+
+
+                // Second Row
                 Card(
                     modifier = Modifier
-                        .weight(0.7f, fill = false)
+                        .height(112.dp)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(StriveTheme.colors.surface),
@@ -256,101 +154,230 @@ fun Overview(viewModel: OverviewViewModel) {
 
                     Column(
                         modifier = Modifier
-                            .padding(24.dp)
-                            .wrapContentHeight()
-                    ) {
-                        Text(
-                            text = "Upcoming Deadlines",
-                            style = StriveText.Semibold,
-                            fontSize = 14.sp,
-                            color = StriveTheme.colors.text
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        LazyColumn(
-                            modifier = Modifier.weight(1f, fill = false),
-                            state = listState
-                        ) {
-                            items(exampleAssessmentModels) { model ->
-                                DeadlineItem(model)
-
-                                Spacer(modifier = Modifier.height(8.dp))
-                            }
-                        }
-                    }
-
-                }
-
-                Card(
-                    modifier = Modifier
-                        .requiredHeightIn(min = 120.dp, max = 120.dp)
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(StriveTheme.colors.surface),
-                    border = BorderStroke(1.dp, StriveTheme.colors.stroke)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(24.dp),
+                            .fillMaxSize()
+                            .padding(24.dp),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(
-                            text = "Focus Time Spent",
-                            style = StriveText.Semibold,
-                            fontSize = 14.sp,
-                            color = StriveTheme.colors.text
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(52.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "TODAY",
-                                    style = StriveText.Normal,
-                                    fontSize = 11.sp,
-                                    color = StriveTheme.colors.greyText,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+                                    text = "Daily Flow",
+                                    style = StriveText.Semibold,
+                                    fontSize = 16.sp,
+                                    color = StriveTheme.colors.text
                                 )
 
+                                Spacer(modifier = Modifier.height(4.dp))
+
                                 Text(
-                                    text = "3.5h",
-                                    style = StriveText.Semibold,
-                                    fontSize = 20.sp,
-                                    color = StriveTheme.colors.text,
-                                    maxLines = 1
+                                    text = "Keep maintaining the pace. $boxesChecked out of $totalBoxes tasks completed today.",
+                                    style = StriveText.Normal,
+                                    fontSize = 13.sp,
+                                    color = StriveTheme.colors.greyText
                                 )
                             }
 
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "THIS WEEK",
-                                    style = StriveText.Normal,
-                                    fontSize = 11.sp,
-                                    color = StriveTheme.colors.greyText,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
+                            Spacer(modifier = Modifier.width(16.dp))
 
-                                Text(
-                                    text = "24.2h",
-                                    style = StriveText.Semibold,
-                                    fontSize = 20.sp,
-                                    color = StriveTheme.colors.text,
-                                    maxLines = 1
-                                )
-                            }
+                            Text(
+                                text = "${(boxesChecked.toDouble() / totalBoxes * 100).toInt()}%",
+                                style = StriveText.Semibold,
+                                fontSize = 20.sp,
+                                color = StriveTheme.colors.accent
+                            )
                         }
+
+                        LinearProgressIndicator(
+                            progress = { (boxesChecked.toDouble() / totalBoxes).toFloat() },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(6.dp)
+                                .clip(RoundedCornerShape(3.dp)),
+                            color = StriveTheme.colors.accent,
+                            trackColor = StriveTheme.colors.bg,
+                            drawStopIndicator = {}
+                        )
                     }
                 }
 
+                Spacer(modifier = Modifier.height(30.dp))
+
+
+                // Third Row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    Card(
+                        modifier = Modifier
+                            .height(334.dp)
+                            .weight(2f),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(StriveTheme.colors.surface),
+                        border = BorderStroke(1.dp, StriveTheme.colors.stroke)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(24.dp),
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                Text(
+                                    text = "Task List",
+                                    style = StriveText.Semibold,
+                                    fontSize = 15.sp,
+                                    color = StriveTheme.colors.text
+                                )
+
+                                Text(
+                                    text = "+ Add Custom Task",
+                                    style = StriveText.Normal,
+                                    fontSize = 12.sp,
+                                    color = StriveTheme.colors.accent,
+                                    textDecoration = if (isCustomTaskTextHighlighted) TextDecoration.Underline else TextDecoration.None,
+                                    modifier = Modifier
+                                        .hoverable(textInteractionSource)
+                                        .clickable(interactionSource = textInteractionSource
+                                        ) { shouldShowTaskDialog = true }
+                                )
+
+                                if (shouldShowTaskDialog) {
+                                    CustomTaskDialog { shouldShowTaskDialog = false }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            data.tasks.forEach { model ->
+                                TaskItem(model, { boxesChecked += 1 }, { boxesChecked -= 1 })
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(24.dp))
+
+                    // Side Stuff
+                    Column(
+                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .weight(0.7f, fill = false)
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(StriveTheme.colors.surface),
+                            border = BorderStroke(1.dp, StriveTheme.colors.stroke)
+                        ) {
+
+                            Column(
+                                modifier = Modifier
+                                    .padding(24.dp)
+                                    .wrapContentHeight()
+                            ) {
+                                Text(
+                                    text = "Upcoming Assessments",
+                                    style = StriveText.Semibold,
+                                    fontSize = 14.sp,
+                                    color = StriveTheme.colors.text
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                LazyColumn(
+                                    modifier = Modifier.weight(1f, fill = false),
+                                    state = listState
+                                ) {
+                                    items(data.assessments) { model ->
+                                        DeadlineItem(model)
+
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                    }
+                                }
+                            }
+
+                        }
+
+                        Card(
+                            modifier = Modifier
+                                .requiredHeightIn(min = 120.dp, max = 120.dp)
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(StriveTheme.colors.surface),
+                            border = BorderStroke(1.dp, StriveTheme.colors.stroke)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(24.dp),
+                                verticalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Focus Time Spent",
+                                    style = StriveText.Semibold,
+                                    fontSize = 14.sp,
+                                    color = StriveTheme.colors.text
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(52.dp),
+                                ) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = "TODAY",
+                                            style = StriveText.Normal,
+                                            fontSize = 11.sp,
+                                            color = StriveTheme.colors.greyText,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+
+                                        Text(
+                                            text = "3.5h",
+                                            style = StriveText.Semibold,
+                                            fontSize = 20.sp,
+                                            color = StriveTheme.colors.text,
+                                            maxLines = 1
+                                        )
+                                    }
+
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = "THIS WEEK",
+                                            style = StriveText.Normal,
+                                            fontSize = 11.sp,
+                                            color = StriveTheme.colors.greyText,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+
+                                        Text(
+                                            text = "24.2h",
+                                            style = StriveText.Semibold,
+                                            fontSize = 20.sp,
+                                            color = StriveTheme.colors.text,
+                                            maxLines = 1
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                }
             }
 
         }
     }
+
 }
 

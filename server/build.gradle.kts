@@ -18,6 +18,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.8.0")
+    implementation(libs.ktor.server.contentNegotiation)
+    implementation(libs.ktor.serialization.json)
 
     testImplementation(libs.ktor.serverTestHost)
     testImplementation(libs.kotlin.testJunit)

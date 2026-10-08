@@ -4,14 +4,16 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Clock
 
 @Serializable
+@SerialName("assessment")
 data class AssessmentModel(
     val name: String,
     val dueDate: LocalDate
-) {
+) : ContentModels {
     fun getDeadlineStatus(): Status {
         val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 

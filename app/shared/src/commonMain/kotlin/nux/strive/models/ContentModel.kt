@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ContentModel(
-    val tasks: List<TaskModel>,
-    val assessments: List<AssessmentModel>
+    val tasks: MutableList<TaskModel>,
+    val assessments: MutableList<AssessmentModel>
 )

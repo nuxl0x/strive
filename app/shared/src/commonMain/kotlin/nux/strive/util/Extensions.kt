@@ -25,7 +25,11 @@ fun LocalDate.format(shouldComparativeFormat: Boolean = false): String {
         else -> "th"
     }
 
-    return "$day, $month $dayOfMonth$suffix"
+    return if (dayOfMonth == 11 || dayOfMonth == 12 || dayOfMonth == 13) {
+        "$day, $month ${dayOfMonth}th"
+    } else {
+        "$day, $month $dayOfMonth$suffix"
+    }
 
 }
 

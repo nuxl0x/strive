@@ -19,10 +19,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
@@ -36,34 +32,11 @@ import nux.strive.util.format
 import org.jetbrains.compose.resources.vectorResource
 import strive.app.shared.generated.resources.Res
 import strive.app.shared.generated.resources.ic_checkmark
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
 
 @Composable
-fun TaskItem(
+fun TeacherTaskItem(
     model: TaskModel,
-    onCheck: () -> Unit,
-    onUnCheck: () -> Unit
 ) {
-    var isCrossed by remember { mutableStateOf(false) }
-    val textColor = if (isCrossed) {
-        StriveTheme.colors.greyText
-    } else {
-        StriveTheme.colors.text
-    }
-
-    val checkMarkBgColor = if (isCrossed) {
-        StriveTheme.colors.accent
-    } else {
-        StriveTheme.colors.bg
-    }
-
-    val strokeColor = if (isCrossed) {
-        StriveTheme.colors.accent
-    } else {
-        StriveTheme.colors.stroke
-    }
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -71,41 +44,11 @@ fun TaskItem(
         // checkbox
 
         Row{
-            Card(
-                onClick = {
-                    isCrossed = !isCrossed
-                    if (isCrossed) {
-                        onCheck()
-                    } else {
-                        onUnCheck()
-                    }
-                },
-                modifier = Modifier.size(20.dp),
-                colors = CardDefaults.cardColors(checkMarkBgColor),
-                shape = RoundedCornerShape(6.dp),
-                border = BorderStroke(1.5.dp, strokeColor),
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = vectorResource(Res.drawable.ic_checkmark),
-                        contentDescription = model.name,
-                        modifier = Modifier.size(10.dp),
-                        tint = StriveTheme.colors.bg
-                    )
-                }
-            }
-
-            Spacer(Modifier.width(16.dp))
-
             Text(
                 text = model.name,
-                color = textColor,
+                color = StriveTheme.colors.text,
                 style = StriveText.Normal,
                 fontSize = 14.sp,
-                textDecoration = if (isCrossed) TextDecoration.LineThrough else TextDecoration.None,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -156,39 +99,7 @@ fun TaskItem(
         thickness = 1.dp,
         color = StriveTheme.colors.stroke,
 
-    )
+        )
 
     Spacer(Modifier.height(14.dp))
 }
-
-val exampleTaskModels = listOf(
-    TaskModel(
-        "Read & annotate Chapter 4 of Electrodynamics",
-        1.5.hours,
-        "PHYSICS"
-    ),
-
-    TaskModel(
-        "Draft outline for Philosophy term paper",
-        1.hours,
-        "PHIL"
-    ),
-
-    TaskModel(
-        "Complete problem set on Multivariable Calculus",
-        2.hours,
-        "MATH"
-    ),
-
-    TaskModel(
-        "Review active recall cards for Classical Mechanics",
-        45.minutes,
-        "PHYSICS"
-    ),
-
-    TaskModel(
-        "Submit initial prototype proposal",
-        30.minutes,
-        "DESIGN"
-    )
-)

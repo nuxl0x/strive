@@ -37,6 +37,6 @@ val httpClient = HttpClient(CIO) {
     }
     defaultRequest {
         host = "localhost"
-        port = 8080
+        port = 8087
     }
 }

@@ -4,17 +4,19 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Clock
 import kotlin.time.Duration
 
 @Serializable
+@SerialName("task")
 data class TaskModel(
     val name: String,
     val duration: Duration,
     val subject: String,
     val dueDate: LocalDate? = null,
-) {
+) : ContentModels {
     fun getDeadlineStatus(): Status {
         if (dueDate == null) return Status.NOT_DUE
 

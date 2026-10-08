@@ -18,7 +18,7 @@ sealed interface OverviewUiState {
     data class Error(val message: String) : OverviewUiState
 }
 
-class OverviewViewModel(val httpClient: HttpClient) : ViewModel() {
+class OverviewViewModel(val httpClient: HttpClient, val targetStudentUuid: String) : ViewModel() {
     private val mutableUiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
     val uiState = mutableUiState.asStateFlow()
 
@@ -31,14 +31,14 @@ class OverviewViewModel(val httpClient: HttpClient) : ViewModel() {
             mutableUiState.value = OverviewUiState.Loading
             try {
                 val response: ContentModel = httpClient.get("/api/content") {
-                    parameter("uuid", "example-uuid")
+                    parameter("uuid", "$targetStudentUuid")
                 }.body()
 
                 mutableUiState.value = OverviewUiState.Success(response)
             } catch (e: ResponseException) {
                 mutableUiState.value = OverviewUiState.Error("Server error: ${e.response.status}")
-            } catch (e: Exception) {
-                mutableUiState.value = OverviewUiState.Error("Network failure: ${e.localizedMessage}")
+            } catch (_: Exception) {
+                mutableUiState.value = OverviewUiState.Error("You need internet to use this application!")
             }
 
         }
